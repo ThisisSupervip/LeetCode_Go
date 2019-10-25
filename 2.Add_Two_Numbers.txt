@@ -1,0 +1,31 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	res:=ListNode{}
+	calc(&res,l1,l2)
+	return &res
+}
+func calc(p *ListNode,pl1 *ListNode,pl2 *ListNode){
+
+	if pl1==nil {
+		pl1 = &ListNode{}
+	}
+	if pl2==nil {
+		pl2 = &ListNode{}
+	}
+	sum:=pl1.Val+pl2.Val+p.Val
+	p.Val=sum%10
+	carry := sum/10
+	if pl1.Next==nil&&pl2.Next==nil&&carry==0{
+		return
+	} else {
+		p.Next = &ListNode{}
+		p.Next.Val = carry
+	}
+	calc(p.Next,pl1.Next,pl2.Next)
+}

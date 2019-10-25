@@ -1,0 +1,56 @@
+func longestPalindrome(s string) string {
+	maxLen := 0
+	left := 0
+	right := 0
+	if len(s) == 0 {
+		return ""
+	}
+	//遍历每个字符 查找回文
+	for i := 0; i < len(s); i++ {
+		cl, cr := findSame(i, s)
+		//当前回文与最长回文长度比较
+		if cr-cl+1 >= maxLen {
+			maxLen = cr - cl + 1
+			left = cl
+			right = cr
+		}
+	}
+	return s[left : right+1]
+}
+
+//返回当前索引i为中心的回文左右的索引
+func findSame(i int, s string) (int, int) {
+	left := i
+	right := i
+	length := 0
+
+	if i+1 < len(s) {
+		cl := compare(i, i+1, s)
+		length = cl * 2
+		if length > 0 {
+			left = i - cl + 1
+			right = i + cl
+		}
+	}
+
+	if i-1 >= 0 && i+1 < len(s) {
+		cl := compare(i-1, i+1, s)
+		if cl*2+1 > length {
+			length = cl*2 + 1
+			left = i - cl
+			right = i + cl
+		}
+	}
+
+	return left, right
+}
+//给定左右两个索引l,r 返回向两侧拓展相同字符的个数
+func compare(l int, r int, s string) int {
+	length := 0
+	for ; l-length >= 0 && r+length < len(s); length++ {
+		if s[l-length] != s[r+length] {
+			break
+		}
+	}
+	return length
+}
